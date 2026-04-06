@@ -12,20 +12,26 @@
 		"enabled": true,
 		"indentStyle": "tab"
 	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-      "style":{
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
         "useImportType": "off"
+      },
+      "correctness": {
+        "noUnusedPrivateClassMembers": "off"
       }
-		}
-	},
+    }
+  },
 	"javascript": {
-		"formatter": {
-			"quoteStyle": "double"
-		}
-	},
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "double"
+    }
+  },
 	"assist": {
 		"enabled": true,
 		"actions": {
