@@ -4,10 +4,6 @@ import { randomUUID } from "node:crypto";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
 
-const prisma = new PrismaClient({
-	adapter: new PrismaPg(`${process.env.DATABASE_URL}`),
-});
-
 function generateUniqueDatabaseURL(schemaId: string) {
 	if (!process.env.DATABASE_URL) {
 		throw new Error("Please provider a DATABASE_URL environment variable.");
@@ -19,14 +15,18 @@ function generateUniqueDatabaseURL(schemaId: string) {
 
 	return url.toString();
 }
+
+let prisma: PrismaClient;
 const schemaId = randomUUID();
 
 beforeAll(async () => {
 	const databaseUrl = generateUniqueDatabaseURL(schemaId);
-
 	process.env.DATABASE_URL = databaseUrl;
+	process.env.DATABASE_SCHEMA = schemaId;
 
-	console.log(databaseUrl);
+	prisma = new PrismaClient({
+		adapter: new PrismaPg({ connectionString: databaseUrl }),
+	});
 
 	execSync("pnpm prisma migrate deploy");
 });
